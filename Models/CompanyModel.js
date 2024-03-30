@@ -8,7 +8,10 @@ let companySchema=mongoose.Schema({
     PhoneNo:String,
     Address:String,
     GST:String,
-    isDeleted:Boolean
+    isDeleted:{
+        type:Boolean,
+        default:false
+    }
 })
 
 const loginschema=joi.object({
@@ -17,8 +20,7 @@ const loginschema=joi.object({
     Email:joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),
     PhoneNo:joi.string().length(10).regex(/^\d+$/).required(),
     Address:joi.string().required(),
-    GST:joi.string().length(15),
-    isDeleted:joi.boolean().required()
+    GST:joi.string().length(15)
 })
 
 const editschema=joi.object({

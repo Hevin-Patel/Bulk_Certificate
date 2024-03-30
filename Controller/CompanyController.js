@@ -7,7 +7,6 @@ const registerCompany=(req,res)=>{
         let Pass=req.body.Password
         let encyptedPassword=bcrypt.hashSync(Pass,10)
         req.body.Password = encyptedPassword
-        req.body.isDeleted =false
         const {error,value}=loginschema.validate(req.body)
         if(error){
             console.log(error)

@@ -2,7 +2,6 @@ const {event,createEventJoi,updateEventJoi}=require('../Models/EventModel')
 
 const createEvent=(req,res)=>{
     try{
-        req.body.isDeleted=false
         const {error,value}=createEventJoi.validate(req.body)
         if(error){
             console.log(error)

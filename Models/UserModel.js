@@ -9,15 +9,16 @@ let userSchema=mongoose.Schema({
     UserName:String,
     UserEmail:String,
     CertificateId:Number,
-    isDeleted:Boolean
+    isDeleted:{
+        type:Boolean,
+        default:false}
 })
 
 let userCreateJoi=joi.object({
     EventId:joi.required(),
     UserName:joi.string().pattern(new RegExp('^[a-zA-Z0-9 ]{1,30}$')).required(),
     UserEmail:joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),
-    CertificateId:joi.number().required(),
-    isDeleted:joi.boolean().required()
+    CertificateId:joi.number().required()
 })
 
 let userUpdateJoi=joi.object({

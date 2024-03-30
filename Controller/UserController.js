@@ -2,7 +2,6 @@ const {user,userCreateJoi,userUpdateJoi}=require('../Models/UserModel')
 
 const createUser=(req,res)=>{
     try{
-        req.body.isDeleted = false
         const {error,value}=userCreateJoi.validate(req.body)
         if(error){
             console.log(error)
@@ -116,7 +115,6 @@ const createBulkUser=(req,res)=>{
     let errorFind
 
     users.map((value)=>{
-        value.isDeleted=false
         const {error}=userCreateJoi.validate(value)
         if(error){
             ErrorFlag=true

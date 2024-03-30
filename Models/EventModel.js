@@ -6,15 +6,16 @@ let eventSchema=mongoose.Schema({
     Description:String,
     StartDate:Date,
     EndDate:Date,
-    isDeleted:Boolean
+    isDeleted:{
+        type:Boolean,
+        default:false}
 })
 
 const createEventJoi=joi.object({
     Name:joi.string().required(),
     Description:joi.string().required(),
     StartDate:joi.date().required(),
-    EndDate:joi.date().required(),
-    isDeleted:joi.boolean().required()
+    EndDate:joi.date().required()
 })
 
 const updateEventJoi=joi.object({
