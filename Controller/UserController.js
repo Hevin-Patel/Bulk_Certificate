@@ -1,29 +1,29 @@
 const {user,userCreateJoi,userUpdateJoi}=require('../Models/UserModel')
 
-const createUser=(req,res)=>{
-    try{
-        const {error,value}=userCreateJoi.validate(req.body)
-        if(error){
-            console.log(error)
-            res.send({message:"Error In Validating The Event Data...Enter Correct Data."})
-        }
-        else{
-            let Data=new user(value)
+// const createUser=(req,res)=>{
+//     try{
+//         const {error,value}=userCreateJoi.validate(req.body)
+//         if(error){
+//             console.log(error)
+//             res.send({message:"Error In Validating The Event Data...Enter Correct Data."})
+//         }
+//         else{
+//             let Data=new user(value)
 
-            Data.save()
-            .then(()=>{
-                res.send({message:"User Registered Successfully."})
-            })
-            .catch((err)=>{
-                console.log(err)
-                res.send({message:"Error Occur In Register User..."})
-            })
-        }
-    }
-    catch{
-        res.send({message:"Server Error"})
-    }
-}
+//             Data.save()
+//             .then(()=>{
+//                 res.send({message:"User Registered Successfully."})
+//             })
+//             .catch((err)=>{
+//                 console.log(err)
+//                 res.send({message:"Error Occur In Register User..."})
+//             })
+//         }
+//     }
+//     catch{
+//         res.send({message:"Server Error"})
+//     }
+// }
 
 const readUser=(req,res)=>{
     try{
@@ -126,6 +126,17 @@ const createBulkUser=(req,res)=>{
     }
     else{
         users.map((val)=>{
+            let eventIdArray=val.EventId.split('')
+            let passEventId=eventIdArray.slice(0,2).join('')
+            let userNameArray=val.UserName.split('')
+            let passUserName=userNameArray.slice(0,2).join('')
+            let passDate=new Date().getDate()
+            let passMonth=new Date().getMonth()
+            let passYear=new Date().getFullYear()
+            let passmilliseconds=new Date().getMilliseconds()
+
+            val.CertificateId=passEventId+passUserName+passDate+passMonth+passYear+passmilliseconds
+            
             let AllUsers=new user(val)
             AllUsers.save()
             .then(()=>{})
@@ -142,4 +153,4 @@ const createBulkUser=(req,res)=>{
         }
     }
 }
-module.exports={createUser,readUser,updateUser,deleteUser,createBulkUser}
+module.exports={readUser,updateUser,deleteUser,createBulkUser}
