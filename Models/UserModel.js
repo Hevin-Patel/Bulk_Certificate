@@ -2,8 +2,10 @@ const mongoose=require('mongoose')
 const joi=require('joi')
 
 let userSchema=mongoose.Schema({
-    UserId:Number,
-    EventId:Number,
+    EventId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Event'
+    },
     UserName:String,
     UserEmail:String,
     CertificateId:Number,
@@ -11,8 +13,7 @@ let userSchema=mongoose.Schema({
 })
 
 let userCreateJoi=joi.object({
-    UserId:joi.number().required(),
-    EventId:joi.number().required(),
+    EventId:joi.required(),
     UserName:joi.string().pattern(new RegExp('^[a-zA-Z0-9 ]{1,30}$')).required(),
     UserEmail:joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),
     CertificateId:joi.number().required(),
@@ -20,7 +21,6 @@ let userCreateJoi=joi.object({
 })
 
 let userUpdateJoi=joi.object({
-    EventId:joi.number(),
     UserName:joi.string().pattern(new RegExp('^[a-zA-Z0-9 ]{1,30}$')),
     UserEmail:joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
     CertificateId:joi.number(),

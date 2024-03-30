@@ -2,7 +2,6 @@ const mongoose=require('mongoose')
 const joi=require('joi')
 
 let companySchema=mongoose.Schema({
-    Id:Number,
     CompanyName:String,
     Password:String,
     Email:String,
@@ -13,7 +12,6 @@ let companySchema=mongoose.Schema({
 })
 
 const loginschema=joi.object({
-    Id:joi.number().required(),
     CompanyName:joi.string().pattern(new RegExp('^[a-zA-Z0-9 ]{1,30}$')).required(),
     Password:joi.string().required(),
     Email:joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),

@@ -6,41 +6,25 @@ const registerCompany=(req,res)=>{
     try{
         let Pass=req.body.Password
         let encyptedPassword=bcrypt.hashSync(Pass,10)
-    
-        company.findOne({}).sort({Id:-1})
-        .then((resp)=>{
-            const {error,value}=loginschema.validate({
-                Id:resp.Id+1,
-                CompanyName:req.body.CompanyName,
-                Password:encyptedPassword,
-                Email:req.body.Email,
-                PhoneNo:req.body.PhoneNo,
-                Address:req.body.Address,
-                GST:req.body.GST,
-                isDeleted:false
+        req.body.Password = encyptedPassword
+        req.body.isDeleted =false
+        const {error,value}=loginschema.validate(req.body)
+        if(error){
+            console.log(error)
+            res.send({message:"Error In Validating The Register Data...Enter Correct Data."})
+        }
+        else{
+            let Data=new company(value)
+
+            Data.save()
+            .then(()=>{
+                res.send({message:"Company Registered Successfully."})
             })
-    
-            if(error){
-                console.log(error)
-                res.send({message:"Error In Validating The Register Data...Enter Correct Data."})
-            }
-            else{
-                let Data=new company(value)
-    
-                Data.save()
-                .then(()=>{
-                    res.send({message:"Company Registered Successfully."})
-                })
-                .catch((err)=>{
-                    console.log(err)
-                    res.send({message:"Error Occur In Register Company..."})
-                })
-            }
-        })
-        .catch((err)=>{
-            console.log(err)
-            res.send({message:"Error Occur In Generating Unique Id By Default..."})
-        })
+            .catch((err)=>{
+                console.log(err)
+                res.send({message:"Error Occur In Register Company..."})
+            })
+        }
     }
     catch{
         res.send({message:"Server Error..."})
@@ -80,7 +64,7 @@ const editCompanyDetail=(req,res)=>{
             res.send({message:"Enter Correct Data ..."})
         }
         else{
-            company.updateOne({Email:req.query.Email},value)
+            company.updateOne({CompanyName:req.query.CompanyName},value)
             .then((resp)=>{
                 console.log(resp)
                 res.send({message:"Details Updated Successfully.."})
@@ -96,32 +80,32 @@ const editCompanyDetail=(req,res)=>{
     }
 }
 
-const deleteCompany=(req,res)=>{
-    try{
-        company.findOne({Id:req.query.Id})
-        .then((resp)=>{
-            if(resp){
-                company.updateOne(resp,{isDeleted:true})
-                .then(()=>{
-                    res.send({message:"Company Deleted Successfully..."})
-                })
-                .catch((err)=>{
-                    console.log(err)
-                    res.send({message:"Error In Deleting Company."})
-                })
-            }
-            else{
-                res.send({message:"There Is No Such Company"})
-            }   
-        })
-        .catch((err)=>{
-            console.log(err)
-            res.send({message:"No Such Company Found..."})
-        })
-    }
-    catch{
-        res.send({message:"Server Error"})
-    }
-}
+// const deleteCompany=(req,res)=>{
+//     try{
+//         company.findOne({Id:req.query.Id}) ////Id is no anymore in companymodel
+//         .then((resp)=>{
+//             if(resp){
+//                 company.updateOne(resp,{isDeleted:true})
+//                 .then(()=>{
+//                     res.send({message:"Company Deleted Successfully..."})
+//                 })
+//                 .catch((err)=>{
+//                     console.log(err)
+//                     res.send({message:"Error In Deleting Company."})
+//                 })
+//             }
+//             else{
+//                 res.send({message:"There Is No Such Company"})
+//             }   
+//         })
+//         .catch((err)=>{
+//             console.log(err)
+//             res.send({message:"No Such Company Found..."})
+//         })
+//     }
+//     catch{
+//         res.send({message:"Server Error"})
+//     }
+// }
 
 module.exports={registerCompany,loginCompany,editCompanyDetail}

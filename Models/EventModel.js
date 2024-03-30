@@ -2,7 +2,6 @@ const mongoose=require('mongoose')
 const joi=require('joi')
 
 let eventSchema=mongoose.Schema({
-    EventId:Number,
     Name:String,
     Description:String,
     StartDate:Date,
@@ -11,7 +10,6 @@ let eventSchema=mongoose.Schema({
 })
 
 const createEventJoi=joi.object({
-    EventId:joi.number().required(),
     Name:joi.string().required(),
     Description:joi.string().required(),
     StartDate:joi.date().required(),

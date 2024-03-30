@@ -2,38 +2,24 @@ const {user,userCreateJoi,userUpdateJoi}=require('../Models/UserModel')
 
 const createUser=(req,res)=>{
     try{
-        user.findOne({}).sort({UserId:-1})
-        .then((resp)=>{
-            const {error,value}=userCreateJoi.validate({
-                UserId:resp.UserId+1,
-                EventId:req.body.EventId,
-                UserName:req.body.UserName,
-                UserEmail:req.body.UserEmail,
-                CertificateId:req.body.CertificateId,
-                isDeleted:false
+        req.body.isDeleted = false
+        const {error,value}=userCreateJoi.validate(req.body)
+        if(error){
+            console.log(error)
+            res.send({message:"Error In Validating The Event Data...Enter Correct Data."})
+        }
+        else{
+            let Data=new user(value)
+
+            Data.save()
+            .then(()=>{
+                res.send({message:"User Registered Successfully."})
             })
-    
-            if(error){
-                console.log(error)
-                res.send({message:"Error In Validating The Event Data...Enter Correct Data."})
-            }
-            else{
-                let Data=new user(value)
-    
-                Data.save()
-                .then(()=>{
-                    res.send({message:"User Registered Successfully."})
-                })
-                .catch((err)=>{
-                    console.log(err)
-                    res.send({message:"Error Occur In Register User..."})
-                })
-            }
-        })
-        .catch((err)=>{
-            console.log(err)
-            res.send({message:"Error Occur In Generating Unique Id By Default..."})
-        })
+            .catch((err)=>{
+                console.log(err)
+                res.send({message:"Error Occur In Register User..."})
+            })
+        }
     }
     catch{
         res.send({message:"Server Error"})
@@ -42,7 +28,7 @@ const createUser=(req,res)=>{
 
 const readUser=(req,res)=>{
     try{
-        user.find({isDeleted:false})
+        user.find({isDeleted:false}).populate('EventId')
         .then((resp)=>{
             if(!resp){
                 res.send({message:"There Is No Such User..."})
@@ -69,7 +55,7 @@ const updateUser=(req,res)=>{
             res.send({message:"Enter Correct Data..."})
         }
         else{
-            user.findOne({UserId:req.query.UserId,isDeleted:false})
+            user.findOne({UserName:req.query.UserName,isDeleted:false})
             .then((resp)=>{
                 if(resp){
                     user.updateOne(resp,value)
@@ -98,7 +84,7 @@ const updateUser=(req,res)=>{
 
 const deleteUser=(req,res)=>{
     try{
-        user.findOne({UserId:req.query.UserId})
+        user.findOne({UserName:req.query.UserName})
         .then((resp)=>{
             if(resp){
                 user.updateOne(resp,{isDeleted:true})

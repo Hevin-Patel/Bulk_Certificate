@@ -2,38 +2,25 @@ const {event,createEventJoi,updateEventJoi}=require('../Models/EventModel')
 
 const createEvent=(req,res)=>{
     try{
-        event.findOne({}).sort({EventId:-1})
-        .then((resp)=>{ 
-            const {error,value}=createEventJoi.validate({
-                EventId:resp.EventId+1,
-                Name:req.body.Name,
-                Description:req.body.Description,
-                StartDate:req.body.StartDate,
-                EndDate:req.body.EndDate,
-                isDeleted:false
+        req.body.isDeleted=false
+        const {error,value}=createEventJoi.validate(req.body)
+        if(error){
+            console.log(error)
+            res.send({message:"Error In Validating The Event Data...Enter Correct Data."})
+        }
+        else{
+            let Data=new event(value)
+
+            Data.save()
+            .then((resp)=>{
+                let Id=resp._id
+                res.send({message:"Event Registered Successfully.",Id})
             })
-    
-            if(error){
-                console.log(error)
-                res.send({message:"Error In Validating The Event Data...Enter Correct Data."})
-            }
-            else{
-                let Data=new event(value)
-    
-                Data.save()
-                .then(()=>{
-                    res.send({message:"Event Registered Successfully."})
-                })
-                .catch((err)=>{
-                    console.log(err)
-                    res.send({message:"Error Occur In Register Event..."})
-                })
-            }
-        })
-        .catch((err)=>{
-            console.log(err)
-            res.send({message:"Error Occur In Generating Unique Id By Default..."})
-        })
+            .catch((err)=>{
+                console.log(err)
+                res.send({message:"Error Occur In Register Event..."})
+            })
+        }
     }
     catch{
         res.send({message:"Server Error"})
@@ -69,7 +56,7 @@ const updateEvent=(req,res)=>{
             res.send({message:"Enter Correct Data..."})
         }
         else{
-            event.findOne({EventId:req.query.EventId,isDeleted:false})
+            event.findOne({Name:req.query.Name,isDeleted:false})
             .then((resp)=>{
                 if(resp){
                     event.updateOne(resp,value)
@@ -98,7 +85,7 @@ const updateEvent=(req,res)=>{
 
 const deleteEvent=(req,res)=>{
     try{
-        event.findOne({EventId:req.query.EventId})
+        event.findOne({Name:req.query.Name})
         .then((resp)=>{
             if(resp){
                 event.updateOne(resp,{isDeleted:true})
