@@ -2,27 +2,33 @@ const mongoose=require('mongoose')
 const joi=require('joi')
 
 let eventSchema=mongoose.Schema({
-    Name:String,
+    EventName:String,
+    EventType:String,
+    NoOfParticipants:Number,
     Description:String,
-    StartDate:Date,
-    EndDate:Date,
+    CreationDate:String,
+    isGenerated:{
+        type:Boolean,
+        default:false},
     isDeleted:{
         type:Boolean,
         default:false}
 })
 
 const createEventJoi=joi.object({
-    Name:joi.string().required(),
+    EventName:joi.string().required(),
+    EventType:joi.string().required(),
+    NoOfParticipants:joi.number(),
     Description:joi.string().required(),
-    StartDate:joi.date().required(),
-    EndDate:joi.date().required()
+    CreationDate:joi.string().required()
 })
 
 const updateEventJoi=joi.object({
-    Name:joi.string(),
+    EventName:joi.string(),
+    EventType:joi.string(),
+    NoOfParticipants:joi.number(),
     Description:joi.string(),
-    StartDate:joi.date(),
-    EndDate:joi.date()
+    CreationDate:joi.string()
 })
 
 let event=mongoose.model('Event',eventSchema)

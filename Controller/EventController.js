@@ -55,7 +55,7 @@ const updateEvent=(req,res)=>{
             res.send({message:"Enter Correct Data..."})
         }
         else{
-            event.findOne({Name:req.query.Name,isDeleted:false})
+            event.findOne({EventName:req.query.EventName,isDeleted:false})
             .then((resp)=>{
                 if(resp){
                     event.updateOne(resp,value)
@@ -84,7 +84,7 @@ const updateEvent=(req,res)=>{
 
 const deleteEvent=(req,res)=>{
     try{
-        event.findOne({Name:req.query.Name})
+        event.findOne({EventName:req.query.EventName})
         .then((resp)=>{
             if(resp){
                 event.updateOne(resp,{isDeleted:true})

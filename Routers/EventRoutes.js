@@ -4,7 +4,7 @@ const {createEvent,readEvent,updateEvent,deleteEvent}=require('../Controller/Eve
 
 let router=express.Router()
 
-router.post("/createEvent", createEvent)
+router.post("/createEvent",createEvent)
 router.get("/readEvent",readEvent)
 router.put("/updateEvent",updateEvent)
 router.put("/deleteEvent",deleteEvent)
