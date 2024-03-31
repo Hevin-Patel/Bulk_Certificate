@@ -8,6 +8,7 @@ let userSchema=mongoose.Schema({
     },
     UserName:String,
     UserEmail:String,
+    Score:Number,
     CertificateId:String,
     isDeleted:{
         type:Boolean,
@@ -18,6 +19,7 @@ let userCreateJoi=joi.object({
     EventId:joi.string(),
     UserName:joi.string().pattern(new RegExp('^[a-zA-Z0-9 ]{1,30}$')).required(),
     UserEmail:joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),
+    Score:joi.number().required(),
     CertificateId:joi.string().required(),
     UserName:joi.string().pattern(new RegExp('^[a-zA-Z0-9 ]{1,30}$')).required(),
     UserEmail:joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),
@@ -27,6 +29,7 @@ let userCreateJoi=joi.object({
 let userUpdateJoi=joi.object({
     UserName:joi.string().pattern(new RegExp('^[a-zA-Z0-9 ]{1,30}$')),
     UserEmail:joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
+    Score:joi.number(),
     CertificateId:joi.string()
 })
 

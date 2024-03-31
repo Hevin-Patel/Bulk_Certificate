@@ -111,6 +111,7 @@ const deleteUser=(req,res)=>{
 
 const createBulkUser=(req,res)=>{
     let users=req.body.user
+    let eventId=req.body.EventId
     let ErrorFlag=false
     let errorFind
 
@@ -125,9 +126,9 @@ const createBulkUser=(req,res)=>{
         res.send({errorFind})
     }
     else{
+        let eventIdArray=eventId.split('')
+        let passEventId=eventIdArray.slice(0,2).join('')
         users.map((val)=>{
-            let eventIdArray=val.EventId.split('')
-            let passEventId=eventIdArray.slice(0,2).join('')
             let userNameArray=val.UserName.split('')
             let passUserName=userNameArray.slice(0,2).join('')
             let passDate=new Date().getDate()
@@ -137,6 +138,7 @@ const createBulkUser=(req,res)=>{
 
             val.CertificateId=passEventId+passUserName+passDate+passMonth+passYear+passmilliseconds
             
+            val.EventId=eventId
             let AllUsers=new user(val)
             AllUsers.save()
             .then(()=>{})
