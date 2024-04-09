@@ -1,3 +1,5 @@
+const { PDFDocument } = require('pdf-lib')
+const ejs = require('ejs')
 const {user,userCreateJoi,userUpdateJoi}=require('../Models/UserModel')
 
 // const createUser=(req,res)=>{
@@ -155,4 +157,21 @@ const createBulkUser=(req,res)=>{
         }
     }
 }
-module.exports={readUser,updateUser,deleteUser,createBulkUser}
+
+const downloadCertificate =(req,res)=>{
+    let certiId = req.query.CertificateId
+    user.find({CertificateId:certiId}).populate("EventId")
+    .then((resp)=>{
+        let userName =resp[0].UserName
+        let score=resp[0].Score
+        let certificateId=resp[0].CertificateId
+        let {EventName, CreationDate}=resp[0].EventId.toObject()
+        res.render("index", {userName:userName, score:score, certificateId:certificateId,
+             eventName:EventName, creationDate:CreationDate})     
+    })
+    .catch((err)=>{
+        console.log(err)
+        res.send({message:"No Such User Found..."})
+    })
+}
+module.exports={readUser,updateUser,deleteUser,createBulkUser,downloadCertificate}

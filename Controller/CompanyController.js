@@ -37,12 +37,12 @@ const loginCompany=(req,res)=>{
         .then((resp)=>{
             let decryptedPassword=bcrypt.compareSync(Pass,resp.Password)
             if(decryptedPassword){
-                let token=jwt.sign({Email:resp.Email, Password:resp.Password, Role:"Company"},'heveen',{expiresIn:'10m'})
+                let token=jwt.sign({Email:resp.Email, Password:resp.Password},'heveen',{expiresIn:'10m'})
                 console.log(resp)
                 res.send({message:"Company Login Successfully",token})
             }
             else{
-                res.send({message:"Company Email and Password Not Match..."})
+                res.send({message:"Company Password Not Match..."})
             }
         })
         .catch((err)=>{

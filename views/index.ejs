@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Certificate of Completion</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: aqua;
+            }
+            .certificate-container {
+                width: 800px;
+                margin: 50px auto;
+                border: 5px solid #3498db; /* Border color */
+                border-radius: 20px;
+                padding: 20px;
+                background-color: lightblue;
+                box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2); /* Box shadow */
+            }
+            .certificate-header {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            .certificate-title {
+                font-size: 32px;
+                color: #7434db; /* Title color */
+                margin-bottom: 10px;
+            }
+            .certificate-subtitle {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+            .certificate-info {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+            .certificate-signature {
+                float: right;
+                margin-top: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="certificate-container">
+            <h5><%= certificateId %></h5>
+            <div class="certificate-header">
+                <div class="certificate-title">Certificate of Completion</div>
+                <div class="certificate-subtitle">This certifies that</div>
+                <div class="certificate-info"><strong><%= userName %></strong></div>
+                <div class="certificate-info">has successfully completed the workshop on</div>
+                <p>with a score of <strong><%= score %></strong></p>
+                <div class="certificate-info"><strong><%= eventName %></strong></div>
+                <div class="certificate-info">Date: <%= creationDate %></div>
+                <div class="certificate-signature">[Your Signature]</div>
+            </div>
+        </div>
+    </body>
+</html>
