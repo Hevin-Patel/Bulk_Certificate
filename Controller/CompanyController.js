@@ -39,10 +39,10 @@ const loginCompany=(req,res)=>{
             if(decryptedPassword){
                 let token=jwt.sign({Email:resp.Email, Password:resp.Password},'heveen',{expiresIn:'10m'})
                 console.log(resp)
-                res.send({message:"Company Login Successfully",token})
+                res.send({isSuccess:true, message:"Company Login Successfully",token})
             }
             else{
-                res.send({message:"Company Password Not Match..."})
+                res.send({isSuccess:false, message:"Company Password Not Match..."})
             }
         })
         .catch((err)=>{
